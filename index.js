@@ -25,8 +25,8 @@ async function run(){
         });
         app.get('/homeservices', async (req, res) => {
             const cursor = serviceCollection.find({});
-            const services = await cursor.limit(3).toArray();
-            res.send(services);
+            const services = await cursor.toArray();
+            res.send(services.slice(services.length-3, services.length));
         });
         app.get('/services/:id', async (req, res) => {
             const id = req.params.id;
@@ -34,6 +34,12 @@ async function run(){
             const service = await serviceCollection.findOne(query);
             res.send(service);
         });
+        app.post('/addservice',  async (req, res) => {
+            const service = req.body; 
+            const result = await serviceCollection.insertOne(service); 
+            res.send(result);
+        });
+
 
 
     }
